@@ -1,14 +1,14 @@
 @extends('layouts.app')
 
 @section('page-content')
-    <div class="card-body px-0 pb-0">
+    <div class="card-body px-0 pb-0" style="background-color: #fff;">
         @if (session('success'))
             <div class="alert alert-success">
                 {{ session('success') }}
             </div>
         @endif
         <hr>
-        <h2>Liste des Courriers d'arrivées</h2>
+        <h2 class="text-center">Liste des Courriers d'Arrivées</h2>
         <hr>
         <div class="table-responsive">
             <table class="table table-flush" id="products-list" style="width: 100%; table-layout: fixed;">
@@ -19,36 +19,41 @@
                                 <a href="{{ route('courrier-entrants.create') }}" class="btn btn-primary">Nouveau courrier</a>
                                 <form action="{{ route('courrier-entrants.index') }}" method="GET" class="form-control me-1 d-flex" style="margin-right: 23px;">
                                     <input type="text" name="search" class="form-control ms-5 me-1" placeholder="Rechercher un courrier..." value="{{ request('search') }}" style="border: 1px solid #ced4da;">
-                                    <button type="submit" class="btn btn-success ">Rechercher</button>
+                                    <button type="submit" class="btn btn-success">Rechercher</button>
                                 </form>
                             </div>
                         </th>
                     </tr>
                     <tr>
-                        <th style="width: 8%; word-break: break-all; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; text-align: left; padding: 10px;">No Ordre</th>
-                        <th style="width: 15%; word-break: break-all; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; text-align: center; padding: 10px;">Nombre de Pièces</th>
-                        <th style="width: 15%; word-break: break-all; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; text-align: center; padding: 10px;">Date de Réception</th>
-                        <th style="width: 22%; word-break: break-all; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; text-align: left; padding: 10px;">Expéditeur</th>
-                        <th style="width: 25%; word-break: break-all; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; text-align: left; padding: 10px;">Objet</th>
-                        <th style="width: 13%; word-break: break-all; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; text-align: left; padding: 10px;">Pièces Jointes</th>
-                        <th style="width: 20%; word-break: break-all; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; text-align: center; padding: 10px;">Action</th>
+                        <th style="width: 5%; padding: 10px; text-align: center; ">No Ordre</th>
+                        <th style="width: 10%; padding: 10px;">Nombre de Pièces</th>
+                        <th style="width: 15%; padding: 10px; ">Date de Réception</th>
+                        <th style="width: 22%; padding: 10px; ">Expéditeur</th>
+                        <th style="width: 25%; padding: 10px; ">Objet</th>
+                        <th style="width: 13%; padding: 10px;text-align: center; ">Pièces Jointes</th>
+                        <th style="width: 20%; padding: 10px; text-align: center;">Action</th>
                     </tr>
                 </thead>
                 <tbody>
                     @if ($courrierEntrants->count() > 0)
                         @foreach ($courrierEntrants as $courrierEntrant)
                             <tr>
-                                <td style="word-break: break-all; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; text-align: left;">{{ $courrierEntrant->id }}</td>
-                                <td style="word-break: break-all; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; text-align: center;">{{ $courrierEntrant->nombre_piece }}</td>
-                                <td style="word-break: break-all; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; text-align: center;">{{ \Carbon\Carbon::parse($courrierEntrant->date_reception)->format('d/m/Y') }}</td>
-                                <td style="word-break: break-all; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; text-align: left;">{{ $courrierEntrant->expediteur }}</td>
-                                <td style="word-break: break-all; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; text-align: left;">{{ $courrierEntrant->objet }}</td>
-                                <td style="word-break: break-all; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; text-align: left;">
+                                <td style="word-break: break-all; text-align: center;">{{ $courrierEntrant->id }}</td>
+                                <td style="text-align: center;">{{ $courrierEntrant->nombre_piece }}</td>
+                                <td style="">{{ \Carbon\Carbon::parse($courrierEntrant->date_reception)->format('d/m/Y') }}</td>
+                                <td style="text-align: left; max-width: 50%; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+                                    {{ $courrierEntrant->expediteur }}
+                                </td>
+                                <td style="text-align: left; max-width: 50%; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+                                    {{ $courrierEntrant->objet }}
+                                </td>
+                                <td style="text-align: center;">
                                     @if ($courrierEntrant->pieces_jointes)
                                         <a href="{{ asset('storage/' . $courrierEntrant->pieces_jointes) }}" target="_blank">
-                                            Voir pièces jointes
+                                            <i class="material-icons text-primary">print</i> <!-- Icône d'imprimante -->
                                         </a>
-                                    @else
+                                        
+                                        @else
                                         Aucune pièce jointe
                                     @endif
                                 </td>

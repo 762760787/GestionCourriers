@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Models\CourrierEntrant;
+use App\Models\CourrierSortant;
 use Carbon\Carbon;
 
 class CourrierEntrantController extends Controller
@@ -17,9 +18,10 @@ class CourrierEntrantController extends Controller
         // Formater la date et l'heure (facultatif)
         $date = $now->format('d/m/Y'); // Exemple : 25/10/2023
         $heure = $now->format('H:i:s'); // Exemple : 14:30:45
-        $totalCourriers = CourrierEntrant::count(); 
+        $totalCourriers = CourrierEntrant::count();
+        $totalCourriersSortie = CourrierSortant::count(); 
         $courrierEntrants = CourrierEntrant::orderBy('updated_at', 'desc')->paginate(6);
-        return view('pages.dashboard', compact('courrierEntrants','totalCourriers','date','heure'));
+        return view('pages.dashboard', compact('courrierEntrants','totalCourriersSortie','totalCourriers','date','heure'));
     }
 
 
@@ -32,11 +34,11 @@ class CourrierEntrantController extends Controller
                 $query->where('expediteur', 'like', '%' . $search . '%')
                     ->orWhere('objet', 'like', '%' . $search . '%');
             })->paginate(8);
-            return view('pages.listingCourrieArriv', compact('courrierEntrants'));
+            return view('pages/courrierArriver.listingCourrieArriv', compact('courrierEntrants'));
         }else{
 
             $courrierEntrants = CourrierEntrant::paginate(8);
-            return view('pages.listingCourrieArriv', compact('courrierEntrants'));
+            return view('pages/courrierArriver.listingCourrieArriv', compact('courrierEntrants'));
         }
 
     }
@@ -46,7 +48,7 @@ class CourrierEntrantController extends Controller
      */
     public function create()
     {
-        return view('pages.ajouteCourrierArrive');
+        return view('pages/courrierArriver.ajouteCourrierArrive');
     }
 
     /**
@@ -60,8 +62,14 @@ class CourrierEntrantController extends Controller
             'expediteur' => 'required|string',
             'objet' => 'required|string',
             'pieces_jointes' => 'nullable|file',
-            'no_archive' => 'required|string',
-            'description' => 'nullable|string',
+            'no_archive' => 'required|string|nullable',
+            'description' => 'nullable|string|nullable',
+        ],[
+            'pieces_jointes.file' => 'Le fichier doit être un fichier valide',
+            'nombre_piece.integer' => 'Le nombre de pièces doit être un nombre entier',
+            'date_reception.date' => 'La date de réception doit être une date valide',
+            'expediteur.string' => 'L\'expéditeur doit être une chaîne de caractères',
+            'objet.string' => 'Le champs objet est requis',
         ]);
 
         if ($request->hasFile('pieces_jointes')) {
@@ -86,7 +94,7 @@ class CourrierEntrantController extends Controller
     public function edit($id)
     {
         $courrierEntrant = CourrierEntrant::findOrFail($id);
-        return view('pages.editCourrierArrive', compact('courrierEntrant'));
+        return view('pages/courrierArriver.editCourrierArrive', compact('courrierEntrant'));
     }
 
     public function update(Request $request, $id)

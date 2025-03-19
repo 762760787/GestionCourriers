@@ -55,7 +55,7 @@
                         <div class="d-flex justify-content-between">
                             <div>
                                 <p class="text-sm mb-0 text-capitalize">Nombre de courrier de départ</p>
-                                <h4 class="mb-0">0</h4>
+                                <h4 class="mb-0">{{ $totalCourriersSortie }}</h4>
                             </div>
                             <div
                                 class="icon icon-md icon-shape bg-gradient-dark shadow-dark shadow text-center border-radius-lg">
