@@ -98,7 +98,7 @@
                                     </div>
                                     
                                     <div class="text-center">
-                                        <button type="submit" class="btn bg-gradient-dark w-100 my-4 mb-2">Sign in</button>
+                                        <button type="submit" class="btn bg-gradient-dark w-100 my-4 mb-2">Connexion</button>
                                     </div>
                                    
                                 </form>
@@ -116,7 +116,7 @@
                                     document.write(new Date().getFullYear())
                                 </script>,
                                 Développer <i class="fa fa-heart" aria-hidden="true"></i> by
-                                <a href="https://www.creative-tim.com" class="font-weight-bold text-white" target="_blank">Creative Tim</a>
+                                <a href="https://www.creative-tim.com" class="font-weight-bold text-white" target="_blank">Creative</a>
                                 Sen pro.
                             </div>
                         </div>
